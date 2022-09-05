@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "ntl": "/node_modules/.bin/ntl"
+    "ntl": "node_modules/.bin/ntl"
   },
   "dependencies": {
     "netlify-cli": "^11.5.1"
