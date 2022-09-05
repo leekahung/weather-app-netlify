@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "ntl": "/node_modules/.bin/ntl"
+  },
+  "dependencies": {
+    "netlify-cli": "^11.5.1"
+  },
+  "devDependencies": {
+    "node-fetch": "^3.2.10"
+  }
+}
