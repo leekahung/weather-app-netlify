@@ -13,6 +13,10 @@ div {
   justify-content: center;
 }
 
+.btn-grp {
+  gap: 20px;
+}
+
 /* Main Body */
 #full-ctnr {
   position: fixed;
@@ -33,10 +37,6 @@ div {
 
 #loc-search {
   width: 15vw;
-}
-
-.btn-grp {
-  gap: 20px;
 }
 
 #loc-here, #loc-submit {
@@ -83,18 +83,14 @@ div {
   font-size: 1.5rem;
 }
 
-#temp-unit {
-  gap: 0;
+#tempF {
+  border-right: 1px solid black;
 }
 
 #fahr, #cel {
-  font-size: 1.3rem;
-  padding: 0 7px;
+  font-size: 1.4rem;
+  padding: 0 12px;
   background: none;
   border: none;
   cursor: pointer;
-}
-
-#fahr {
-  border-right: 1px solid black;
 }

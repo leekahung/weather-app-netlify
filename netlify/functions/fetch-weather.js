@@ -12,7 +12,9 @@ export const handler = async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      tempCurrent: data.main.temp
+      tempCurrent: data.main.temp,
+      weatherCondition: data.weather[0].main,
+      weatherDescript: data.weather[0].description
     })
   };
 };
