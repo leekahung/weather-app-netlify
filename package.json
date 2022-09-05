@@ -1,11 +1,26 @@
 {
   "scripts": {
-    "ntl": "node_modules/.bin/ntl"
+    "ntl": "ntl"
   },
   "dependencies": {
     "netlify-cli": "^11.5.1"
   },
   "devDependencies": {
     "node-fetch": "^3.2.10"
-  }
+  },
+  "name": "weather-app-netlify",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leekahung/weather-app-netlify.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leekahung/weather-app-netlify/issues"
+  },
+  "homepage": "https://github.com/leekahung/weather-app-netlify#readme",
+  "type": "module"
 }

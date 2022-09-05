@@ -30,13 +30,17 @@ let origTemp;
 let units = "F"; // set F as default
 
 const getWeather = async (latInp, lonInp) => {
-  const WEATHER_API = `https://api.openweathermap.org/data/2.5/weather?lat=${latInp}&lon=${lonInp}&appid=${process.env.API_KEY}&units=imperial`;
+  const response = await fetch("/.netlify/functions/fetch-weather", {
+    method: "POST",
+    body: JSON.stringify({
+      lat: latInp,
+      lon: lonInp
+    })
+  })
 
-  const response = await fetch(WEATHER_API);
   const data = await response.json();
 
-  console.log(WEATHER_API);
-  origTemp = data.main.temp;
+  origTemp = data.tempCurrent;
   tempCurr.innerHTML = Math.round(origTemp);
 };
 
