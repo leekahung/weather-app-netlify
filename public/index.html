@@ -4,15 +4,34 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles.css">
   <title>Document</title>
 </head>
 <body>
-  <form>
-    <label for="loc-search">Enter Location:
-      <input id="loc-search" type="text">
-      <button id="loc-here">Locate Me</button>
-      <button id="loc-submit">Search</button>
-    </label>
-  </form>
+  <div id="full-ctnr">
+    <form>
+      <label id="search-grp" for="loc-search">Enter Location:
+        <input id="loc-search" type="text" placeholder="Location Name">
+        <div class="btn-grp">
+          <button id="loc-here">Locate Me</button>
+          <button id="loc-submit">Search</button>
+        </div>
+      </label>
+    </form>
+    <div id="loc-group">
+      <div id="loc-header">Weather in:</div>
+      <div id="loc-name">Portland, Oregon</div>
+    </div>
+    <div id="weather-ctnr">
+      <div id="temp-curr">73</div>
+      <div id="weather-cond">Sunny</div>
+      <div id="weather-desc">Clear Sky</div>
+      <div id="temp-unit">
+        <button id="fahr">F</button>
+        <button id="cel">C</button>
+      </div>
+    </div>
+  </div>
+  <script src="./script.js"></script>
 </body>
 </html>
