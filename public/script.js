@@ -1,10 +1,19 @@
+/* Main fetch functions for getting location and weather */
 document.addEventListener("DOMContentLoaded", () => {
   const locSubmit = document.getElementById("loc-submit");
   const locSearch = document.getElementById("loc-search");
   const locName = document.getElementById("loc-name");
+  const locHere = document.getElementById("loc-here");
+
+  locHere.addEventListener("click", async (event) => {
+    event.preventDefault();
+    locName.innerHTML = "Locating...";
+    getCoords(locName);
+  });
 
   locSubmit.addEventListener("click", async (event) => {
     event.preventDefault();
+    locName.innerHTML = "Locating..."
     const response = await fetch("/.netlify/functions/fetch-loc-direct", {
       method: "POST",
       body: JSON.stringify({
@@ -25,6 +34,47 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+/* Helper functions that assist with obtaining weather data via fetch-weather*/
+const getCoords = async (elem) => {
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 4000,
+    maximumAge: 0
+  };
+
+  function success(pos) {
+    lat = pos.coords.latitude;
+    lon = pos.coords.longitude;
+    getLoc(lat, lon, elem);
+  }
+
+  function error(err) {
+    locName.innerHTML = `Unable to retrieve location. Reason: ${err.code} ${err.message}`;
+  }
+
+  navigator.geolocation.getCurrentPosition(success, error, options);
+};
+
+const getLoc = async (latInp, lonInp, elem) => {
+  const response = await fetch("/.netlify/functions/fetch-loc-reverse", {
+    method: "POST",
+    body: JSON.stringify({
+      lat: latInp,
+      lon: lonInp
+    })
+  });
+
+  const data = await response.json();
+  
+  if (data.stateName === undefined) {
+    elem.innerHTML = `${data.cityName}, ${data.countryName}`;
+  } else {
+    elem.innerHTML = `${data.cityName}, ${data.stateName}, ${data.countryName}`;
+  }
+
+  getWeather(latInp, lonInp);
+}
+
 const tempCurr = document.getElementById("temp-curr");
 const weatherCond = document.getElementById("weather-cond");
 const weatherDesc = document.getElementById("weather-desc");
@@ -38,7 +88,7 @@ const getWeather = async (latInp, lonInp) => {
       lat: latInp,
       lon: lonInp
     })
-  })
+  });
 
   const data = await response.json();
 
