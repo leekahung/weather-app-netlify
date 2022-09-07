@@ -9,9 +9,9 @@ export const handler = async (event) => {
   const response = await fetch(GEOCODE_API);
   const data = await response.json();
 
-  const locArr = (eventBody.locationName)
-    .toLowerCase().split(",").map(item => item.trim());
+  const locArr = (eventBody.locationName).toLowerCase().split(",").map(item => item.trim());
   let likelyLoc;
+
   switch (locArr.length) {
     case 1:
       likelyLoc = data[0];
@@ -19,7 +19,6 @@ export const handler = async (event) => {
     case 2:
     case 3:
       likelyLoc = data.filter(item => item.hasOwnProperty("state") && item.state.toLowerCase() === locArr[1])[0];
-
       if (likelyLoc === undefined) {
         likelyLoc = data.filter(item => regionName.of(item.country).toLowerCase() === locArr[1])[0];
       }
@@ -34,7 +33,6 @@ export const handler = async (event) => {
       countryName: regionName.of(likelyLoc.country),
       lat: likelyLoc.lat,
       lon: likelyLoc.lon
-      //data: likelyLoc //debugger line
     })
   };
 };

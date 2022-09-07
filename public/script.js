@@ -5,32 +5,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const locName = document.getElementById("loc-name");
   const locHere = document.getElementById("loc-here");
 
-  locHere.addEventListener("click", async (event) => {
-    event.preventDefault();
+  locHere.addEventListener("click", () => {
     locName.innerHTML = "Locating...";
     getCoords(locName);
   });
 
-  locSubmit.addEventListener("click", async (event) => {
-    event.preventDefault();
-    locName.innerHTML = "Locating..."
-    const response = await fetch("/.netlify/functions/fetch-loc-direct", {
-      method: "POST",
-      body: JSON.stringify({
-        locationName: locSearch.value
-      })
-    });
+  locSubmit.addEventListener("click", () => {
+    locName.innerHTML = "Locating...";
+    getLocDir(locSearch, locName);
+  });
 
-    const data = await response.json();
-
-    //console.log(data); //debugger line
-    if (data.stateName === undefined) {
-      locName.innerHTML = `${data.cityName}, ${data.countryName}`;
-    } else {
-      locName.innerHTML = `${data.cityName}, ${data.stateName}, ${data.countryName}`;
+  document.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      locName.innerHTML = "Locating...";
+      if (event.key === "Enter" && locSearch.value === "") {
+        getCoords(locName);
+      } else if (event.key === "Enter" && locSearch.value !== "") {
+        getLocDir(locSearch, locName);
+      }
     }
-
-    getWeather(data.lat, data.lon);
   });
 });
 
@@ -45,17 +38,39 @@ const getCoords = async (elem) => {
   function success(pos) {
     lat = pos.coords.latitude;
     lon = pos.coords.longitude;
-    getLoc(lat, lon, elem);
+    getLocRev(lat, lon, elem);
   }
 
   function error(err) {
-    locName.innerHTML = `Unable to retrieve location. Reason: ${err.code} ${err.message}`;
+    elem.innerHTML = `${err.message}; Unable to retrieve location.`;
   }
 
   navigator.geolocation.getCurrentPosition(success, error, options);
 };
 
-const getLoc = async (latInp, lonInp, elem) => {
+const getLocDir = async (elemSearch, elemLoc) => {
+  const response = await fetch("/.netlify/functions/fetch-loc-direct", {
+    method: "POST",
+    body: JSON.stringify({
+      locationName: elemSearch.value
+    })
+  });
+
+  const data = await response.json();
+
+  if (data.stateName === undefined) {
+    elemLoc.innerHTML = `${data.cityName}<br>
+    ${data.countryName}`;
+  } else {
+    elemLoc.innerHTML = `${data.cityName}, ${data.stateName}<br> 
+    ${data.countryName}`;
+  }
+
+  getWeather(data.lat, data.lon);
+};
+
+const getLocRev = async (latInp, lonInp, elem) => {
+  elem.innerHTML = "Locating...";
   const response = await fetch("/.netlify/functions/fetch-loc-reverse", {
     method: "POST",
     body: JSON.stringify({
@@ -65,15 +80,17 @@ const getLoc = async (latInp, lonInp, elem) => {
   });
 
   const data = await response.json();
-  
+
   if (data.stateName === undefined) {
-    elem.innerHTML = `${data.cityName}, ${data.countryName}`;
+    elem.innerHTML = `${data.cityName}<br>
+    ${data.countryName}`;
   } else {
-    elem.innerHTML = `${data.cityName}, ${data.stateName}, ${data.countryName}`;
+    elem.innerHTML = `${data.cityName}, ${data.stateName}<br>
+    ${data.countryName}`;
   }
 
   getWeather(latInp, lonInp);
-}
+};
 
 const tempCurr = document.getElementById("temp-curr");
 const weatherCond = document.getElementById("weather-cond");

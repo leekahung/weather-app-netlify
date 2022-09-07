@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-const regionName = new Intl.DisplayNames(["en"], { type: "region" })
+const regionName = new Intl.DisplayNames(["en"], { type: "region" });
 
 export const handler = async (event) => {
   const eventBody = JSON.parse(event.body);
@@ -15,7 +15,6 @@ export const handler = async (event) => {
       cityName: data[0].name,
       stateName: data[0].state,
       countryName: regionName.of(data[0].country)
-      //data: data //debugger line
     })
   };
 };

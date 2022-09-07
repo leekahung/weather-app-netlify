@@ -1,4 +1,5 @@
 node_modules
+public/img
 
 # Local Netlify folder
 .netlify

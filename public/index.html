@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ka Hung's Weather App using Open Weather Map API, hosted by Netlify" />
-  <link rel="stylesheet" href="./styles.css" />
-  <title>Document</title>
-</head>
-<body>
-  <div id="full-ctnr">
-    <label id="search-grp" for="loc-search">Enter Location:
-      <input id="loc-search" type="text" placeholder="Location Name">
-      <div class="btn-grp">
-        <button id="loc-here">Locate Me</button>
-        <button id="loc-submit" type="submit">Search</button>
-      </div>
-    </label>
-    <div id="loc-group">
-      <div id="loc-header">Weather in:</div>
-      <div id="loc-name"></div>
-    </div>
-    <div id="weather-ctnr">
-      <div id="temp-curr"></div>
-      <div id="weather-cond"></div>
-      <div id="weather-desc"></div>
-      <div id="temp-unit">
-        <div id="tempF" class="btn-grp">
-          <button id="fahr">&#8457;</button>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Ka Hung's Weather App using Open Weather Map API, hosted by Netlify" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="full-ctnr">
+      <label id="search-grp" for="loc-search">Enter Location:
+        <input id="loc-search" type="text" placeholder="Location Name">
+        <div class="btn-grp">
+          <button id="loc-here">Locate Me</button>
+          <button id="loc-submit" type="submit">Search</button>
         </div>
-        <div id="tempC" class="btn-grp">
-          <button id="cel">&#8451;</button>
+      </label>
+      <div id="loc-group">
+        <div id="loc-header">Weather in:</div>
+        <div id="loc-name"></div>
+      </div>
+      <div id="weather-ctnr">
+        <div id="temp-curr"></div>
+        <div id="weather-cond"></div>
+        <div id="weather-desc"></div>
+        <div id="temp-unit">
+          <div id="tempF" class="btn-grp">
+            <button id="fahr">&#8457;</button>
+          </div>
+          <div id="tempC" class="btn-grp">
+            <button id="cel">&#8451;</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="./script.js"></script>
-</body>
+    <script src="./script.js"></script>
+  </body>
+
 </html>
