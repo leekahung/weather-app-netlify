@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   locSubmit.addEventListener("click", () => {
+    if (locSearch.value === "") {
+      return;
+    }
+
     locName.innerHTML = "Locating...";
     getLocDir(locSearch, locName);
   });
@@ -144,6 +148,7 @@ const getWeather = async (latInp, lonInp) => {
   });
 
   const data = await response.json();
+  const time = new Date();
 
   origTemp = data.tempCurrent;
   origTempHigh = data.tempHigh;
@@ -153,13 +158,20 @@ const getWeather = async (latInp, lonInp) => {
   tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
   weatherCond.innerHTML = data.weatherCondition;
   weatherDesc.innerHTML = data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
-  fetchCallTime.innerHTML = `Last checked: ${data.fetchTime}`;
+  fetchCallTime.innerHTML = `Last checked: ${time.toLocaleString()}`;
 
+  if (document.getElementById("tempF") === null) {
+    makeUnitBtns();
+  }
+};
+
+const makeUnitBtns = () => {
   for (let i = 0; i < tempSym.size; i++) {
     const elem = document.createElement("div");
     const btn = document.createElement("button");
     tempUnit.appendChild(elem).className = "btn-grp";
     tempUnit.appendChild(elem).id = tempSym.get(tempAbbrev[i])[2];
+
     tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(tempAbbrev[i])[1];
     tempUnit.appendChild(elem).appendChild(btn).innerHTML = tempSym.get(tempAbbrev[i])[0];
     tempUnit.appendChild(elem).appendChild(btn).onclick = convertFuncs[i];

@@ -6,12 +6,10 @@ export const handler = async (event) => {
 
   const response = await fetch(WEATHER_API);
   const data = await response.json();
-  const time = new Date();
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      fetchTime: time.toLocaleString(),
       tempCurrent: data.main.temp,
       tempHigh: data.main.temp_max,
       tempLow: data.main.temp_min,
