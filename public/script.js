@@ -92,10 +92,46 @@ const getLocRev = async (latInp, lonInp, elem) => {
   getWeather(latInp, lonInp);
 };
 
+const fahr2Cel = () => {
+  if (tempCurr.innerHTML === "") {
+    return;
+  }
+
+  if (units === "C") {
+    tempCurr.innerHTML = `${Math.round(origTemp)}&#176;`;
+    tempHi.innerHTML = `Hi ${Math.round(origTempHigh)}&#176;`;
+    tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
+    units = "F";
+  }
+};
+
+const cel2Fahr = () => {
+  if (tempCurr.innerHTML === "") {
+    return;
+  }
+
+  if (units === "F") {
+    tempCurr.innerHTML = `${Math.round((origTemp - 32) * (5 / 9))}&#176;`;
+    tempHi.innerHTML = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}&#176;`;
+    tempLo.innerHTML = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}&#176;`;
+    units = "C";
+  }
+};
+
 const tempCurr = document.getElementById("temp-curr");
+const tempHi = document.getElementById("temp-high");
+const tempLo = document.getElementById("temp-low");
 const weatherCond = document.getElementById("weather-cond");
 const weatherDesc = document.getElementById("weather-desc");
+const fetchCallTime = document.getElementById("fetch-time");
+const tempUnit = document.getElementById("temp-unit");
+const tempSym = new Map([["F", ["&#8457;", "fahr", "tempF"]], ["C", ["&#8451;", "cel", "tempC"]]]);
+const tempAbbrev = ["F", "C"];
+const convertFuncs = [fahr2Cel, cel2Fahr];
+
 let origTemp;
+let origTempHigh;
+let origTempLow;
 let units = "F"; // set F as default
 
 const getWeather = async (latInp, lonInp) => {
@@ -110,35 +146,22 @@ const getWeather = async (latInp, lonInp) => {
   const data = await response.json();
 
   origTemp = data.tempCurrent;
-  tempCurr.innerHTML = Math.round(origTemp);
-  tempCurr.innerHTML += "&#8457;";
+  origTempHigh = data.tempHigh;
+  origTempLow = data.tempLow;
+  tempCurr.innerHTML = `${Math.round(origTemp)}&#176;`;
+  tempHi.innerHTML = `Hi ${Math.round(origTempHigh)}&#176;`;
+  tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
   weatherCond.innerHTML = data.weatherCondition;
   weatherDesc.innerHTML = data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
+  fetchCallTime.innerHTML = `Last checked: ${data.fetchTime}`;
+
+  for (let i = 0; i < tempSym.size; i++) {
+    const elem = document.createElement("div");
+    const btn = document.createElement("button");
+    tempUnit.appendChild(elem).className = "btn-grp";
+    tempUnit.appendChild(elem).id = tempSym.get(tempAbbrev[i])[2];
+    tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(tempAbbrev[i])[1];
+    tempUnit.appendChild(elem).appendChild(btn).innerHTML = tempSym.get(tempAbbrev[i])[0];
+    tempUnit.appendChild(elem).appendChild(btn).onclick = convertFuncs[i];
+  }
 };
-
-const fahrBtn = document.getElementById("fahr");
-const celBtn = document.getElementById("cel");
-
-fahrBtn.addEventListener("click", () => {
-  if (tempCurr.innerHTML === "") {
-    return;
-  }
-
-  if (units === "C") {
-    tempCurr.innerHTML = Math.round(origTemp);
-    tempCurr.innerHTML += "&#8457;";
-    units = "F";
-  }
-});
-
-celBtn.addEventListener("click", () => {
-  if (tempCurr.innerHTML === "") {
-    return;
-  }
-
-  if (units === "F") {
-    tempCurr.innerHTML = Math.round((origTemp - 32) * (5 / 9));
-    tempCurr.innerHTML += "&#8451;";
-    units = "C";
-  }
-});
