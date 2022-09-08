@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* Helper functions that assist with obtaining weather data via fetch-weather*/
+/* Helper functions that assist with obtaining geo coordinates via Navigator */
 const getCoords = async (elem) => {
   const options = {
     enableHighAccuracy: true,
@@ -96,6 +96,7 @@ const getLocRev = async (latInp, lonInp, elem) => {
   getWeather(latInp, lonInp);
 };
 
+/* Helper functions that convert temperature */
 const fahr2Cel = () => {
   if (tempCurr.innerHTML === "") {
     return;
@@ -138,6 +139,7 @@ let origTempHigh;
 let origTempLow;
 let units = "F"; // set F as default
 
+/* Main function to fetch weather from location coordinates */
 const getWeather = async (latInp, lonInp) => {
   const response = await fetch("/.netlify/functions/fetch-weather", {
     method: "POST",
@@ -165,6 +167,7 @@ const getWeather = async (latInp, lonInp) => {
   }
 };
 
+/* Helper function to add temp conversion buttons to weather container */
 const makeUnitBtns = () => {
   for (let i = 0; i < tempSym.size; i++) {
     const elem = document.createElement("div");
