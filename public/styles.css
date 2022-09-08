@@ -30,12 +30,16 @@ button {
 }
 
 /* Search Group */
+#search-ctnr,
+#search-grp {
+  flex-direction: column;
+  gap: 15px;
+}
+
 #search-grp {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 15px;
   font-size: 1.4rem;
 }
 
