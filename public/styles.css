@@ -7,6 +7,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  background-color: rgb(180, 180, 180);
+}
+
 div {
   display: flex;
   align-items: center;
@@ -45,10 +49,11 @@ button {
 
 #loc-search {
   width: 250px;
-  padding: 5px;
+  padding: 0.5rem 0.7rem;
   text-indent: 0.7rem;
   border-radius: 20px;
-  border: 2px solid rgb(180, 180, 180);
+  border: none;
+  line-height: 1.1rem;
 }
 
 #loc-here, #loc-submit {
@@ -93,6 +98,7 @@ button {
   border-radius: 20px;
   width: 300px;
   aspect-ratio: 1;
+  background-color: white;
 }
 
 #temp-curr {

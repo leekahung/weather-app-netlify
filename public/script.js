@@ -1,4 +1,4 @@
-/* Main fetch functions for getting location and weather */
+/* Main functions for getting location and weather */
 document.addEventListener("DOMContentLoaded", () => {
   const locSubmit = document.getElementById("loc-submit");
   const locSearch = document.getElementById("loc-search");
@@ -62,15 +62,20 @@ const getLocDir = async (elemSearch, elemLoc) => {
 
   const data = await response.json();
 
-  if (data.stateName === undefined) {
-    elemLoc.innerHTML = `${data.cityName}<br>
-    ${data.countryName}`;
-  } else {
-    elemLoc.innerHTML = `${data.cityName}, ${data.stateName}<br> 
-    ${data.countryName}`;
-  }
+  if (response.ok) {
+    if (data.stateName === undefined) {
+      elemLoc.innerHTML = `${data.cityName},<br>
+      ${data.countryName}`;
+    } else {
+      elemLoc.innerHTML = `${data.cityName}, ${data.stateName},<br> 
+      ${data.countryName}`;
+    }
 
-  getWeather(data.lat, data.lon);
+    getWeather(data.lat, data.lon);
+  } else {
+    elemLoc.innerHTML = `${data.errMsg1}<br>
+    ${data.errMsg2}`; 
+  }
 };
 
 const getLocRev = async (latInp, lonInp, elem) => {
@@ -85,11 +90,12 @@ const getLocRev = async (latInp, lonInp, elem) => {
 
   const data = await response.json();
 
+
   if (data.stateName === undefined) {
-    elem.innerHTML = `${data.cityName}<br>
+    elem.innerHTML = `${data.cityName},<br>
     ${data.countryName}`;
   } else {
-    elem.innerHTML = `${data.cityName}, ${data.stateName}<br>
+    elem.innerHTML = `${data.cityName}, ${data.stateName},<br>
     ${data.countryName}`;
   }
 
