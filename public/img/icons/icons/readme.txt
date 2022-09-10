@@ -5,7 +5,7 @@ Modified date: 2022-09-09
 Modified by: Ka Hung Lee
 
 Modifications made:
-- Created freezing rain icon using 1530364 and 1530371.
+- Created freezing rain icon using 1530364 and 1530371 and named it freezing_rain.svg.
 - Removed grey shading from 1530363 and renamed it thunderstorm.svg.
 - Renamed 1530364 to rain.svg.
 - Renamed 1530365 to drizzle.svg.
