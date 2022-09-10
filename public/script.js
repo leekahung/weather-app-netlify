@@ -172,6 +172,7 @@ const getWeather = async (latInp, lonInp) => {
     makeUnitBtns();
   }
 
+  /* Logic to display weather icon */
   let utcTimeLocation = data.timeInfo / 3600;
   const utcTimeLocal = time.getTimezoneOffset() / -60;
   const locationHour = time.getHours() + (utcTimeLocation - utcTimeLocal);
