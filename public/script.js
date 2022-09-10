@@ -74,7 +74,7 @@ const getLocDir = async (elemSearch, elemLoc) => {
     getWeather(data.lat, data.lon);
   } else {
     elemLoc.innerHTML = `${data.errMsg1}<br>
-    ${data.errMsg2}`; 
+    ${data.errMsg2}`;
   }
 };
 
@@ -170,6 +170,88 @@ const getWeather = async (latInp, lonInp) => {
 
   if (document.getElementById("tempF") === null) {
     makeUnitBtns();
+  }
+
+  let utcTimeLocation = data.timeInfo / 3600;
+  const utcTimeLocal = time.getTimezoneOffset() / -60;
+  const locationHour = time.getHours() + (utcTimeLocation - utcTimeLocal);
+ 
+  let condCode = data.conditionCode;
+  const condIcon = document.getElementById("cond-icon");
+  const iconPath = "./img/icons/icons/";
+  const iconImg = document.createElement("img");
+  iconImg.id = "cond-icon-img";
+
+  switch (String(condCode)[0]) {
+    case "2":
+      iconImg.src = `${iconPath}thunderstorm.svg`;
+      iconImg.alt = "thunderstorm icon";
+      break;
+    case "3":
+      iconImg.src = `${iconPath}drizzle.svg`;
+      iconImg.alt = "drizzle icon";
+      break;
+    case "5":
+      if (condCode === 511) {
+        iconImg.src = `${iconPath}freezing_rain.svg`;
+        iconImg.alt = "freezing rain icon";
+        break;
+      } else {
+        iconImg.src = `${iconPath}rain.svg`;
+        iconImg.alt = "rain icon";
+        break;
+      }
+    case "6":
+      iconImg.src = `${iconPath}snow.svg`;
+      iconImg.alt = "snow icon";
+      break;
+    case "7":
+      if (condCode === 781) {
+        iconImg.src = `${iconPath}tornado_storm.svg`;
+        iconImg.alt = "tornado and storm icon";
+        break;
+      } else if ([731, 751, 761].includes(condCode)) {
+        iconImg.src = `${iconPath}sandstorm.svg`;
+        iconImg.alt = "sandstorm icon";
+        break;
+      } else {
+        iconImg.src = `${iconPath}foggy.svg`;
+        iconImg.alt = "foggy icon";
+        break;
+      }
+    default:
+      if (condCode === 800) {
+        if ((locationHour >= 6) && (locationHour <= 1800)) {
+          iconImg.src = `${iconPath}clear.svg`;
+          iconImg.alt = "sun icon";
+          break;
+        } else {
+          iconImg.src = `${iconPath}clear_night.svg`;
+          iconImg.alt = "moon icon";
+          break;
+        }
+      } else if ([801, 802].includes(condCode)) {
+        if ((locationHour >= 6) && (locationHour <= 1800)) {
+          iconImg.src = `${iconPath}cloudy_with_sun.svg`;
+          iconImg.alt = "cloud with sun icon";
+          break;
+        } else {
+          iconImg.src = `${iconPath}cloudy_with_moon.svg`;
+          iconImg.alt = "cloud with moon icon";
+          break;
+        }
+      } else {
+        iconImg.src = `${iconPath}cloudy.svg`;
+        iconImg.alt = "cloud icon";
+        break;
+      }
+  }
+
+  if (document.getElementById("cond-icon-img") === null) {
+    condIcon.appendChild(iconImg);
+  } else {
+    document.getElementById("cond-icon-img").src = iconImg.src;
+    document.getElementById("cond-icon-img").alt = iconImg.alt;
   }
 };
 

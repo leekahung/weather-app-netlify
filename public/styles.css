@@ -96,9 +96,19 @@ button {
   gap: 10px;
   border: 2px solid black;
   border-radius: 20px;
-  width: 300px;
+  width: 275px;
   aspect-ratio: 1;
   background-color: white;
+}
+
+#weather-grp-top {
+  width: 100%;
+  justify-content: space-between;
+}
+
+#cond-icon {
+  height: 70px;
+  aspect-ratio: 1;
 }
 
 #temp-curr {

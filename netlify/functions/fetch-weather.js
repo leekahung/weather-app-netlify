@@ -15,7 +15,8 @@ export const handler = async (event) => {
       tempLow: data.main.temp_min,
       weatherCondition: data.weather[0].main,
       weatherDescript: data.weather[0].description,
-      conditionCode: data.weather[0].id
+      conditionCode: data.weather[0].id,
+      timeInfo: data.timezone,
     })
   };
 };

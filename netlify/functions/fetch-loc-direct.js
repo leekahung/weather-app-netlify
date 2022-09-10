@@ -33,7 +33,7 @@ export const handler = async (event) => {
         stateName: likelyLoc.state,
         countryName: regionName.of(likelyLoc.country),
         lat: likelyLoc.lat,
-        lon: likelyLoc.lon
+        lon: likelyLoc.lon,
       })
     };
   } catch (err) {
