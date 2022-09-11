@@ -9,6 +9,7 @@
 
 body {
   background-color: rgb(180, 180, 180);
+  overflow: hidden;
 }
 
 div {
@@ -28,9 +29,15 @@ button {
 /* Main Body */
 #full-ctnr {
   position: fixed;
-  flex-direction: column;
   inset: 0;
+}
+
+#ctnr-grp {
+  flex-direction: column;
   gap: 50px;
+  width: 50vw;
+  height: 80vh;
+  background-color: rgb(220, 220, 220, 0.7);
 }
 
 /* Search Group */
@@ -59,7 +66,7 @@ button {
 #loc-here, #loc-submit {
   font-size: 0.9rem;
   padding: 5px 15px;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(180, 180, 180);
   border-radius: 20px;
   border: none;
 }
@@ -104,6 +111,10 @@ button {
 #weather-grp-top {
   width: 100%;
   justify-content: space-between;
+}
+
+#cond-img {
+  width: 100%;
 }
 
 #cond-icon {

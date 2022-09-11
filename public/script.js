@@ -178,6 +178,10 @@ const getWeather = async (latInp, lonInp) => {
   const locationHour = time.getHours() + (utcTimeLocation - utcTimeLocal);
  
   let condCode = data.conditionCode;
+  const imgPath = "./img/webp/";
+  const condImg = document.createElement("img");
+  condImg.id = "cond-img";
+
   const condIcon = document.getElementById("cond-icon");
   const iconPath = "./img/icons/icons/";
   const iconImg = document.createElement("img");
@@ -185,63 +189,89 @@ const getWeather = async (latInp, lonInp) => {
 
   switch (String(condCode)[0]) {
     case "2":
+      condImg.src = `${imgPath}thunderstorm.webp`;
+      condImg.alt = "thunderstorm image"
       iconImg.src = `${iconPath}thunderstorm.svg`;
       iconImg.alt = "thunderstorm icon";
       break;
     case "3":
+      condImg.src = `${imgPath}rain.webp`;
+      condImg.alt = "rain image";
       iconImg.src = `${iconPath}drizzle.svg`;
       iconImg.alt = "drizzle icon";
       break;
     case "5":
       if (condCode === 511) {
+        condImg.src = `${imgPath}snow.webp`;
+        condImg.alt = "snow image";
         iconImg.src = `${iconPath}freezing_rain.svg`;
         iconImg.alt = "freezing rain icon";
         break;
       } else {
+        condImg.src = `${imgPath}rain.webp`;
+        condImg.alt = "rain image";
         iconImg.src = `${iconPath}rain.svg`;
         iconImg.alt = "rain icon";
         break;
       }
     case "6":
+      condImg.src = `${imgPath}snow.webp`;
+      condImg.alt = "snow image";
       iconImg.src = `${iconPath}snow.svg`;
       iconImg.alt = "snow icon";
       break;
     case "7":
       if (condCode === 781) {
+        condImg.src = `${imgPath}tornado.webp`;
+        condImg.alt = "tornado image";
         iconImg.src = `${iconPath}tornado_storm.svg`;
         iconImg.alt = "tornado and storm icon";
         break;
       } else if ([731, 751, 761].includes(condCode)) {
+        condImg.src = `${imgPath}dust.webp`;
+        condImg.alt = "sandstorm duststorm image";
         iconImg.src = `${iconPath}sandstorm.svg`;
         iconImg.alt = "sandstorm icon";
         break;
       } else {
+        condImg.src = `${imgPath}fog.webp`;
+        condImg.alt = "fog image";
         iconImg.src = `${iconPath}foggy.svg`;
         iconImg.alt = "foggy icon";
         break;
       }
     default:
       if (condCode === 800) {
-        if ((locationHour >= 6) && (locationHour <= 1800)) {
+        if ((locationHour >= 6) && (locationHour <= 18)) {
+          condImg.src = `${imgPath}clear.webp`;
+          condImg.alt = "sunny image";
           iconImg.src = `${iconPath}clear.svg`;
           iconImg.alt = "sun icon";
           break;
         } else {
+          condImg.src = `${imgPath}clear_night.webp`;
+          condImg.alt = "clear starry sky image";
           iconImg.src = `${iconPath}clear_night.svg`;
           iconImg.alt = "moon icon";
           break;
         }
       } else if ([801, 802].includes(condCode)) {
-        if ((locationHour >= 6) && (locationHour <= 1800)) {
+        if ((locationHour >= 6) && (locationHour <= 18)) {
+          condImg.src = `${imgPath}scatterclouds.webp`;
+          condImg.alt = "sun with scatter cloud image";
           iconImg.src = `${iconPath}cloudy_with_sun.svg`;
           iconImg.alt = "cloud with sun icon";
           break;
         } else {
+          condImg.src = `${imgPath}cloudy_night.webp`;
+          condImg.alt = "moon with clouds image";
           iconImg.src = `${iconPath}cloudy_with_moon.svg`;
           iconImg.alt = "cloud with moon icon";
           break;
         }
       } else {
+        condImg.src = `${imgPath}overcast.webp`;
+        condImg.alt = "cloudy image";
         iconImg.src = `${iconPath}cloudy.svg`;
         iconImg.alt = "cloud icon";
         break;
@@ -253,6 +283,13 @@ const getWeather = async (latInp, lonInp) => {
   } else {
     document.getElementById("cond-icon-img").src = iconImg.src;
     document.getElementById("cond-icon-img").alt = iconImg.alt;
+  }
+
+  if (document.getElementById("cond-img") === null) {
+    document.body.appendChild(condImg);
+  } else {
+    document.getElementById("cond-img").src = condImg.src;
+    document.getElementById("cond-img").alt = condImg.alt;
   }
 };
 
