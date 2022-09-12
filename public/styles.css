@@ -207,4 +207,10 @@ button {
   #full-ctnr {
     position: initial;
   }
+
+  #cond-img {
+    position: absolute;
+    top: 0;
+    z-index: -10;
+  }
 }
