@@ -7,6 +7,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+html {
+  position: fixed;
+}
+
 body {
   background-color: rgb(180, 180, 180);
   overflow: hidden;
