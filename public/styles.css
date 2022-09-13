@@ -126,6 +126,11 @@ button {
   aspect-ratio: 1;
 }
 
+#cond-icon-img {
+  height: 70px;
+  aspect-ratio: 1;
+}
+
 #temp-curr {
   font-size: 4rem;
   height: 4rem;
