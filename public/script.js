@@ -136,7 +136,7 @@ const getWeather = async (latInp, lonInp) => {
   weatherDesc.innerHTML = data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
   fetchCallTime.innerHTML = `Last checked: ${time.toLocaleString()}`;
 
-  /* Logic to display weather icon */
+  /* Logic to display weather image and icon */
   let utcTimeLocation = data.timeInfo / 3600;
   const utcTimeLocal = time.getTimezoneOffset() / -60;
   const locationHour = time.getHours() + (utcTimeLocation - utcTimeLocal);
@@ -242,7 +242,7 @@ const getWeather = async (latInp, lonInp) => {
       }
   }
 
-  /* Logic for switching weather img and icon */
+  /* Logic for updating weather img and icon */
   if (document.getElementById("cond-icon-img") === null) {
     condIcon.appendChild(iconImg);
   } else {
@@ -284,8 +284,8 @@ const getWeather = async (latInp, lonInp) => {
     }
   };
 
-  /* Helper function to add temp conversion buttons to weather container */
-  const makeUnitBtns = () => {
+  /* Logic to create temp conversion buttons to weather container */
+  if (document.getElementById("tempF") === null) {
     const tempUnit = document.getElementById("temp-unit");
     const tempSym = new Map([
       ["F", ["&#8457;", "fahr", "tempF"]],
@@ -293,7 +293,7 @@ const getWeather = async (latInp, lonInp) => {
     ]);
     const tempAbbrev = ["F", "C"];
     const convertFuncs = [fahr2Cel, cel2Fahr];
-
+  
     for (let i = 0; i < tempSym.size; i++) {
       const elem = document.createElement("div");
       const btn = document.createElement("button");
@@ -302,10 +302,6 @@ const getWeather = async (latInp, lonInp) => {
       tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(tempAbbrev[i])[1];
       tempUnit.appendChild(elem).appendChild(btn).innerHTML = tempSym.get(tempAbbrev[i])[0];
       tempUnit.appendChild(elem).appendChild(btn).onclick = convertFuncs[i];
-    }
-  };
-
-  if (document.getElementById("tempF") === null) {
-    makeUnitBtns();
+    } 
   }
 };
