@@ -36,7 +36,7 @@ const getCoords = async (elem) => {
   const options = {
     enableHighAccuracy: true,
     timeout: 4000,
-    maximumAge: 0
+    maximumAge: 0,
   };
 
   function success(pos) {
@@ -56,8 +56,8 @@ const getLocDir = async (elemSearch, elemLoc) => {
   const response = await fetch("/.netlify/functions/fetch-loc-direct", {
     method: "POST",
     body: JSON.stringify({
-      locationName: elemSearch.value
-    })
+      locationName: elemSearch.value,
+    }),
   });
 
   const data = await response.json();
@@ -84,12 +84,11 @@ const getLocRev = async (latInp, lonInp, elem) => {
     method: "POST",
     body: JSON.stringify({
       lat: latInp,
-      lon: lonInp
-    })
+      lon: lonInp,
+    }),
   });
 
   const data = await response.json();
-
 
   if (data.stateName === undefined) {
     elem.innerHTML = `${data.cityName},<br>
@@ -102,48 +101,10 @@ const getLocRev = async (latInp, lonInp, elem) => {
   getWeather(latInp, lonInp);
 };
 
-/* Helper functions that convert temperature */
-const fahr2Cel = () => {
-  if (tempCurr.innerHTML === "") {
-    return;
-  }
-
-  if (units === "C") {
-    tempCurr.innerHTML = `${Math.round(origTemp)}&#176;`;
-    tempHi.innerHTML = `Hi ${Math.round(origTempHigh)}&#176;`;
-    tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
-    units = "F";
-  }
-};
-
-const cel2Fahr = () => {
-  if (tempCurr.innerHTML === "") {
-    return;
-  }
-
-  if (units === "F") {
-    tempCurr.innerHTML = `${Math.round((origTemp - 32) * (5 / 9))}&#176;`;
-    tempHi.innerHTML = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}&#176;`;
-    tempLo.innerHTML = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}&#176;`;
-    units = "C";
-  }
-};
-
-const tempCurr = document.getElementById("temp-curr");
-const tempHi = document.getElementById("temp-high");
-const tempLo = document.getElementById("temp-low");
-const weatherCond = document.getElementById("weather-cond");
-const weatherDesc = document.getElementById("weather-desc");
-const fetchCallTime = document.getElementById("fetch-time");
-const tempUnit = document.getElementById("temp-unit");
-const tempSym = new Map([["F", ["&#8457;", "fahr", "tempF"]], ["C", ["&#8451;", "cel", "tempC"]]]);
-const tempAbbrev = ["F", "C"];
-const convertFuncs = [fahr2Cel, cel2Fahr];
-
+let units = "F"; // set F as default
 let origTemp;
 let origTempHigh;
 let origTempLow;
-let units = "F"; // set F as default
 
 /* Main function to fetch weather from location coordinates */
 const getWeather = async (latInp, lonInp) => {
@@ -151,16 +112,23 @@ const getWeather = async (latInp, lonInp) => {
     method: "POST",
     body: JSON.stringify({
       lat: latInp,
-      lon: lonInp
-    })
+      lon: lonInp,
+    }),
   });
 
   const data = await response.json();
   const time = new Date();
 
+  const tempCurr = document.getElementById("temp-curr");
+  const tempHi = document.getElementById("temp-high");
+  const tempLo = document.getElementById("temp-low");
+  const weatherCond = document.getElementById("weather-cond");
+  const weatherDesc = document.getElementById("weather-desc");
+  const fetchCallTime = document.getElementById("fetch-time");
+
   origTemp = data.tempCurrent;
   origTempHigh = data.tempHigh;
-  origTempLow = data.tempLow;
+  origTempLow = data.tempLow; 
   tempCurr.innerHTML = `${Math.round(origTemp)}&#176;`;
   tempHi.innerHTML = `Hi ${Math.round(origTempHigh)}&#176;`;
   tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
@@ -168,15 +136,11 @@ const getWeather = async (latInp, lonInp) => {
   weatherDesc.innerHTML = data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
   fetchCallTime.innerHTML = `Last checked: ${time.toLocaleString()}`;
 
-  if (document.getElementById("tempF") === null) {
-    makeUnitBtns();
-  }
-
   /* Logic to display weather icon */
   let utcTimeLocation = data.timeInfo / 3600;
   const utcTimeLocal = time.getTimezoneOffset() / -60;
   const locationHour = time.getHours() + (utcTimeLocation - utcTimeLocal);
- 
+
   let condCode = data.conditionCode;
   const imgPath = "./img/webp/";
   const condImg = document.createElement("img");
@@ -190,7 +154,7 @@ const getWeather = async (latInp, lonInp) => {
   switch (String(condCode)[0]) {
     case "2":
       condImg.src = `${imgPath}thunderstorm.webp`;
-      condImg.alt = "thunderstorm image"
+      condImg.alt = "thunderstorm image";
       iconImg.src = `${iconPath}thunderstorm.svg`;
       iconImg.alt = "thunderstorm icon";
       break;
@@ -242,7 +206,7 @@ const getWeather = async (latInp, lonInp) => {
       }
     default:
       if (condCode === 800) {
-        if ((locationHour >= 6) && (locationHour <= 18)) {
+        if (locationHour >= 6 && locationHour <= 18) {
           condImg.src = `${imgPath}clear.webp`;
           condImg.alt = "sunny image";
           iconImg.src = `${iconPath}clear.svg`;
@@ -256,7 +220,7 @@ const getWeather = async (latInp, lonInp) => {
           break;
         }
       } else if ([801, 802].includes(condCode)) {
-        if ((locationHour >= 6) && (locationHour <= 18)) {
+        if (locationHour >= 6 && locationHour <= 18) {
           condImg.src = `${imgPath}scatterclouds.webp`;
           condImg.alt = "sun with scatter cloud image";
           iconImg.src = `${iconPath}cloudy_with_sun.svg`;
@@ -278,6 +242,7 @@ const getWeather = async (latInp, lonInp) => {
       }
   }
 
+  /* Logic for switching weather img and icon */
   if (document.getElementById("cond-icon-img") === null) {
     condIcon.appendChild(iconImg);
   } else {
@@ -291,18 +256,56 @@ const getWeather = async (latInp, lonInp) => {
     document.getElementById("cond-img").src = condImg.src;
     document.getElementById("cond-img").alt = condImg.alt;
   }
-};
 
-/* Helper function to add temp conversion buttons to weather container */
-const makeUnitBtns = () => {
-  for (let i = 0; i < tempSym.size; i++) {
-    const elem = document.createElement("div");
-    const btn = document.createElement("button");
-    tempUnit.appendChild(elem).className = "btn-grp";
-    tempUnit.appendChild(elem).id = tempSym.get(tempAbbrev[i])[2];
+  /* Helper functions for temperature conversion */
+  const fahr2Cel = () => {
+    if (tempCurr.innerHTML === "") {
+      return;
+    }
+  
+    if (units === "C") {
+      tempCurr.innerHTML = `${Math.round(origTemp)}&#176;`;
+      tempHi.innerHTML = `Hi ${Math.round(origTempHigh)}&#176;`;
+      tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
+      units = "F";
+    }
+  };
+  
+  const cel2Fahr = () => {
+    if (tempCurr.innerHTML === "") {
+      return;
+    }
+  
+    if (units === "F") {
+      tempCurr.innerHTML = `${Math.round((origTemp - 32) * (5 / 9))}&#176;`;
+      tempHi.innerHTML = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}&#176;`;
+      tempLo.innerHTML = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}&#176;`;
+      units = "C";
+    }
+  };
 
-    tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(tempAbbrev[i])[1];
-    tempUnit.appendChild(elem).appendChild(btn).innerHTML = tempSym.get(tempAbbrev[i])[0];
-    tempUnit.appendChild(elem).appendChild(btn).onclick = convertFuncs[i];
+  /* Helper function to add temp conversion buttons to weather container */
+  const makeUnitBtns = () => {
+    const tempUnit = document.getElementById("temp-unit");
+    const tempSym = new Map([
+      ["F", ["&#8457;", "fahr", "tempF"]],
+      ["C", ["&#8451;", "cel", "tempC"]],
+    ]);
+    const tempAbbrev = ["F", "C"];
+    const convertFuncs = [fahr2Cel, cel2Fahr];
+
+    for (let i = 0; i < tempSym.size; i++) {
+      const elem = document.createElement("div");
+      const btn = document.createElement("button");
+      tempUnit.appendChild(elem).className = "btn-grp";
+      tempUnit.appendChild(elem).id = tempSym.get(tempAbbrev[i])[2];
+      tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(tempAbbrev[i])[1];
+      tempUnit.appendChild(elem).appendChild(btn).innerHTML = tempSym.get(tempAbbrev[i])[0];
+      tempUnit.appendChild(elem).appendChild(btn).onclick = convertFuncs[i];
+    }
+  };
+
+  if (document.getElementById("tempF") === null) {
+    makeUnitBtns();
   }
 };
