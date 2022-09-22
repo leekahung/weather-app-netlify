@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const locHere = document.getElementById("loc-here");
 
   locHere.addEventListener("click", () => {
-    locName.innerHTML = "Locating...";
+    locName.innerText = "Locating...";
     getCoords(locName);
   });
 
@@ -15,13 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    locName.innerHTML = "Locating...";
+    locName.innerText = "Locating...";
     getLocDir(locSearch, locName);
   });
 
   document.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      locName.innerHTML = "Locating...";
+      locName.innerText = "Locating...";
       if (event.key === "Enter" && locSearch.value === "") {
         getCoords(locName);
       } else if (event.key === "Enter" && locSearch.value !== "") {
@@ -46,7 +46,7 @@ const getCoords = async (elem) => {
   }
 
   function error(err) {
-    elem.innerHTML = `${err.message}; Unable to retrieve location.`;
+    elem.innerText = `${err.message}; Unable to retrieve location.`;
   }
 
   navigator.geolocation.getCurrentPosition(success, error, options);
@@ -64,22 +64,19 @@ const getLocDir = async (elemSearch, elemLoc) => {
 
   if (response.ok) {
     if (data.stateName === undefined) {
-      elemLoc.innerHTML = `${data.cityName},<br>
-      ${data.countryName}`;
+      elemLoc.innerText = `${data.cityName},\n ${data.countryName}`;
     } else {
-      elemLoc.innerHTML = `${data.cityName}, ${data.stateName},<br> 
-      ${data.countryName}`;
+      elemLoc.innerText = `${data.cityName}, ${data.stateName},\n ${data.countryName}`;
     }
 
     getWeather(data.lat, data.lon);
   } else {
-    elemLoc.innerHTML = `${data.errMsg1}<br>
-    ${data.errMsg2}`;
+    elemLoc.innerText = `${data.errMsg1}\n ${data.errMsg2}`;
   }
 };
 
 const getLocRev = async (latInp, lonInp, elem) => {
-  elem.innerHTML = "Locating...";
+  elem.innerText = "Locating...";
   const response = await fetch("/.netlify/functions/fetch-loc-reverse", {
     method: "POST",
     body: JSON.stringify({
@@ -91,11 +88,9 @@ const getLocRev = async (latInp, lonInp, elem) => {
   const data = await response.json();
 
   if (data.stateName === undefined) {
-    elem.innerHTML = `${data.cityName},<br>
-    ${data.countryName}`;
+    elem.innerText = `${data.cityName},\n ${data.countryName}`;
   } else {
-    elem.innerHTML = `${data.cityName}, ${data.stateName},<br>
-    ${data.countryName}`;
+    elem.innerText = `${data.cityName}, ${data.stateName},\n ${data.countryName}`;
   }
 
   getWeather(latInp, lonInp);
@@ -129,12 +124,12 @@ const getWeather = async (latInp, lonInp) => {
   origTemp = data.tempCurrent;
   origTempHigh = data.tempHigh;
   origTempLow = data.tempLow; 
-  tempCurr.innerHTML = `${Math.round(origTemp)}&#176;`;
-  tempHi.innerHTML = `Hi ${Math.round(origTempHigh)}&#176;`;
-  tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
-  weatherCond.innerHTML = data.weatherCondition;
-  weatherDesc.innerHTML = data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
-  fetchCallTime.innerHTML = `Last checked: ${time.toLocaleString()}`;
+  tempCurr.innerText = `${Math.round(origTemp)}\u00B0`;
+  tempHi.innerText = `Hi ${Math.round(origTempHigh)}\u00B0`;
+  tempLo.innerText = `Lo ${Math.round(origTempLow)}\u00B0`;
+  weatherCond.innerText = data.weatherCondition;
+  weatherDesc.innerText = data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
+  fetchCallTime.innerText = `Last checked: ${time.toLocaleString()}`;
 
   /* Logic to display weather image and icon */
   let utcTimeLocation = data.timeInfo / 3600;
@@ -259,27 +254,27 @@ const getWeather = async (latInp, lonInp) => {
 
   /* Helper functions for temperature conversion */
   const fahr2Cel = () => {
-    if (tempCurr.innerHTML === "") {
+    if (tempCurr.innerText === "") {
       return;
     }
   
     if (units === "C") {
-      tempCurr.innerHTML = `${Math.round(origTemp)}&#176;`;
-      tempHi.innerHTML = `Hi ${Math.round(origTempHigh)}&#176;`;
-      tempLo.innerHTML = `Lo ${Math.round(origTempLow)}&#176;`;
+      tempCurr.innerText = `${Math.round(origTemp)}\u00B0`;
+      tempHi.innerText = `Hi ${Math.round(origTempHigh)}\u00B0`;
+      tempLo.innerText = `Lo ${Math.round(origTempLow)}\u00B0`;
       units = "F";
     }
   };
   
   const cel2Fahr = () => {
-    if (tempCurr.innerHTML === "") {
+    if (tempCurr.innerText === "") {
       return;
     }
   
     if (units === "F") {
-      tempCurr.innerHTML = `${Math.round((origTemp - 32) * (5 / 9))}&#176;`;
-      tempHi.innerHTML = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}&#176;`;
-      tempLo.innerHTML = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}&#176;`;
+      tempCurr.innerText = `${Math.round((origTemp - 32) * (5 / 9))}\u00B0`;
+      tempHi.innerText = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}\u00B0`;
+      tempLo.innerText = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}\u00B0`;
       units = "C";
     }
   };
@@ -288,8 +283,8 @@ const getWeather = async (latInp, lonInp) => {
   if (document.getElementById("tempF") === null) {
     const tempUnit = document.getElementById("temp-unit");
     const tempSym = new Map([
-      ["F", ["&#8457;", "fahr", "tempF"]],
-      ["C", ["&#8451;", "cel", "tempC"]],
+      ["F", ["\u2109", "fahr", "tempF"]],
+      ["C", ["\u2103", "cel", "tempC"]],
     ]);
     const tempAbbrev = ["F", "C"];
     const convertFuncs = [fahr2Cel, cel2Fahr];
@@ -300,7 +295,7 @@ const getWeather = async (latInp, lonInp) => {
       tempUnit.appendChild(elem).className = "btn-grp";
       tempUnit.appendChild(elem).id = tempSym.get(tempAbbrev[i])[2];
       tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(tempAbbrev[i])[1];
-      tempUnit.appendChild(elem).appendChild(btn).innerHTML = tempSym.get(tempAbbrev[i])[0];
+      tempUnit.appendChild(elem).appendChild(btn).innerText = tempSym.get(tempAbbrev[i])[0];
       tempUnit.appendChild(elem).appendChild(btn).onclick = convertFuncs[i];
     } 
   }
