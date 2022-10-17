@@ -262,6 +262,8 @@ const getWeather = async (latInp, lonInp) => {
       tempCurr.innerText = `${Math.round(origTemp)}\u00B0`;
       tempHi.innerText = `Hi ${Math.round(origTempHigh)}\u00B0`;
       tempLo.innerText = `Lo ${Math.round(origTempLow)}\u00B0`;
+      document.documentElement.style.setProperty("--tempF-select-opacity", "1");
+      document.documentElement.style.setProperty("--tempC-select-opacity", "0");
       units = "F";
     }
   };
@@ -275,6 +277,8 @@ const getWeather = async (latInp, lonInp) => {
       tempCurr.innerText = `${Math.round((origTemp - 32) * (5 / 9))}\u00B0`;
       tempHi.innerText = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}\u00B0`;
       tempLo.innerText = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}\u00B0`;
+      document.documentElement.style.setProperty("--tempF-select-opacity", "0");
+      document.documentElement.style.setProperty("--tempC-select-opacity", "1");
       units = "C";
     }
   };
