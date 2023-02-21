@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { GeoCodeType } from "./openWeatherMapTypes";
+import { GeoCodeType } from "../../public/openWeatherMapTypes";
 
 const regionName = new Intl.DisplayNames(["en"], { type: "region" });
 

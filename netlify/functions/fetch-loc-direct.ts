@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { GeoCodeType } from "./openWeatherMapTypes";
+import { GeoCodeType } from "../../public/openWeatherMapTypes";
 
 interface FetchRequest {
   method: string;

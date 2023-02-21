@@ -248,14 +248,28 @@ const getWeather = (latInp, lonInp) => __awaiter(void 0, void 0, void 0, functio
         condImgElement.alt = condImg.alt;
     }
     /* Helper functions for temperature conversion */
+    const setFahr = () => {
+        tempCurr.innerText = `${Math.round(origTemp)}\u00B0`;
+        tempHi.innerText = `Hi ${Math.round(origTempHigh)}\u00B0`;
+        tempLo.innerText = `Lo ${Math.round(origTempLow)}\u00B0`;
+        document.documentElement.style.setProperty("--tempF-select-opacity", "1");
+        document.documentElement.style.setProperty("--tempC-select-opacity", "0");
+        units = "F";
+    };
+    const setCel = () => {
+        tempCurr.innerText = `${Math.round((origTemp - 32) * (5 / 9))}\u00B0`;
+        tempHi.innerText = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}\u00B0`;
+        tempLo.innerText = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}\u00B0`;
+        document.documentElement.style.setProperty("--tempF-select-opacity", "0");
+        document.documentElement.style.setProperty("--tempC-select-opacity", "1");
+        units = "C";
+    };
     const fahr2Cel = () => {
         if (!tempCurr.innerText) {
             return;
         }
         if (units === "C") {
-            document.documentElement.style.setProperty("--tempF-select-opacity", "1");
-            document.documentElement.style.setProperty("--tempC-select-opacity", "0");
-            units = "F";
+            setFahr();
         }
     };
     const cel2Fahr = () => {
@@ -263,9 +277,7 @@ const getWeather = (latInp, lonInp) => __awaiter(void 0, void 0, void 0, functio
             return;
         }
         if (units === "F") {
-            document.documentElement.style.setProperty("--tempF-select-opacity", "0");
-            document.documentElement.style.setProperty("--tempC-select-opacity", "1");
-            units = "C";
+            setCel();
         }
     };
     /* Logic to create temp conversion buttons to weather container */
@@ -288,18 +300,10 @@ const getWeather = (latInp, lonInp) => __awaiter(void 0, void 0, void 0, functio
         }
     }
     /* Logic to set temperature based on temperature scale settings */
-    if (units === "C") {
-        tempCurr.innerText = `${Math.round((origTemp - 32) * (5 / 9))}\u00B0`;
-        tempHi.innerText = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}\u00B0`;
-        tempLo.innerText = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}\u00B0`;
-        document.documentElement.style.setProperty("--tempF-select-opacity", "0");
-        document.documentElement.style.setProperty("--tempC-select-opacity", "1");
+    if (units === "F") {
+        setFahr();
     }
     else {
-        tempCurr.innerText = `${Math.round(origTemp)}\u00B0`;
-        tempHi.innerText = `Hi ${Math.round(origTempHigh)}\u00B0`;
-        tempLo.innerText = `Lo ${Math.round(origTempLow)}\u00B0`;
-        document.documentElement.style.setProperty("--tempF-select-opacity", "1");
-        document.documentElement.style.setProperty("--tempC-select-opacity", "0");
+        setCel();
     }
 });

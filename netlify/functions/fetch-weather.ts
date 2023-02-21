@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { CurrentWeatherType } from "./openWeatherMapTypes";
+import { CurrentWeatherType } from "../../public/openWeatherMapTypes";
 
 interface FetchRequest {
   method: string;
