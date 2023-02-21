@@ -79,6 +79,7 @@ button {
 #loc-submit {
   font-size: 0.9rem;
   padding: 5px 15px;
+  color: rgb(230, 230, 230);
   background-color: rgb(150, 150, 150);
   border-radius: 20px;
   border: none;
