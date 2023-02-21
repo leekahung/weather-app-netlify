@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "ntl": "ntl"
+    "dev": "netlify dev"
   },
   "dependencies": {
     "netlify-cli": "^11.5.1"

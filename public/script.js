@@ -22,11 +22,14 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
       locName.innerText = "Locating...";
-      if (event.key === "Enter" && locSearch.value === "") {
-        getCoords(locName);
-      } else if (event.key === "Enter" && locSearch.value !== "") {
-        getLocDir(locSearch, locName);
-      }
+    }
+
+    if (event.key === "Enter" && locSearch.value === "") {
+      getCoords(locName);
+    }
+
+    if (event.key === "Enter" && locSearch.value !== "") {
+      getLocDir(locSearch, locName);
     }
   });
 });
@@ -63,7 +66,7 @@ const getLocDir = async (elemSearch, elemLoc) => {
   const data = await response.json();
 
   if (response.ok) {
-    if (data.stateName === undefined) {
+    if (!data.stateName) {
       elemLoc.innerText = `${data.cityName},\n ${data.countryName}`;
     } else {
       elemLoc.innerText = `${data.cityName}, ${data.stateName},\n ${data.countryName}`;
@@ -87,7 +90,7 @@ const getLocRev = async (latInp, lonInp, elem) => {
 
   const data = await response.json();
 
-  if (data.stateName === undefined) {
+  if (!data.stateName) {
     elem.innerText = `${data.cityName},\n ${data.countryName}`;
   } else {
     elem.innerText = `${data.cityName}, ${data.stateName},\n ${data.countryName}`;
@@ -123,12 +126,13 @@ const getWeather = async (latInp, lonInp) => {
 
   origTemp = data.tempCurrent;
   origTempHigh = data.tempHigh;
-  origTempLow = data.tempLow; 
+  origTempLow = data.tempLow;
   tempCurr.innerText = `${Math.round(origTemp)}\u00B0`;
   tempHi.innerText = `Hi ${Math.round(origTempHigh)}\u00B0`;
   tempLo.innerText = `Lo ${Math.round(origTempLow)}\u00B0`;
   weatherCond.innerText = data.weatherCondition;
-  weatherDesc.innerText = data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
+  weatherDesc.innerText =
+    data.weatherDescript[0].toUpperCase() + data.weatherDescript.slice(1);
   fetchCallTime.innerText = `Last checked: ${time.toLocaleString()}`;
 
   /* Logic to display weather image and icon */
@@ -238,14 +242,14 @@ const getWeather = async (latInp, lonInp) => {
   }
 
   /* Logic for updating weather img and icon */
-  if (document.getElementById("cond-icon-img") === null) {
+  if (!document.getElementById("cond-icon-img")) {
     condIcon.appendChild(iconImg);
   } else {
     document.getElementById("cond-icon-img").src = iconImg.src;
     document.getElementById("cond-icon-img").alt = iconImg.alt;
   }
 
-  if (document.getElementById("cond-img") === null) {
+  if (!document.getElementById("cond-img")) {
     document.body.appendChild(condImg);
   } else {
     document.getElementById("cond-img").src = condImg.src;
@@ -254,10 +258,10 @@ const getWeather = async (latInp, lonInp) => {
 
   /* Helper functions for temperature conversion */
   const fahr2Cel = () => {
-    if (tempCurr.innerText === "") {
+    if (!tempCurr.innerText) {
       return;
     }
-  
+
     if (units === "C") {
       tempCurr.innerText = `${Math.round(origTemp)}\u00B0`;
       tempHi.innerText = `Hi ${Math.round(origTempHigh)}\u00B0`;
@@ -267,15 +271,17 @@ const getWeather = async (latInp, lonInp) => {
       units = "F";
     }
   };
-  
+
   const cel2Fahr = () => {
-    if (tempCurr.innerText === "") {
+    if (!tempCurr.innerText) {
       return;
     }
-  
+
     if (units === "F") {
       tempCurr.innerText = `${Math.round((origTemp - 32) * (5 / 9))}\u00B0`;
-      tempHi.innerText = `Hi ${Math.round((origTempHigh - 32) * (5 / 9))}\u00B0`;
+      tempHi.innerText = `Hi ${Math.round(
+        (origTempHigh - 32) * (5 / 9)
+      )}\u00B0`;
       tempLo.innerText = `Lo ${Math.round((origTempLow - 32) * (5 / 9))}\u00B0`;
       document.documentElement.style.setProperty("--tempF-select-opacity", "0");
       document.documentElement.style.setProperty("--tempC-select-opacity", "1");
@@ -284,7 +290,7 @@ const getWeather = async (latInp, lonInp) => {
   };
 
   /* Logic to create temp conversion buttons to weather container */
-  if (document.getElementById("tempF") === null) {
+  if (!document.getElementById("tempF")) {
     const tempUnit = document.getElementById("temp-unit");
     const tempSym = new Map([
       ["F", ["\u2109", "fahr", "tempF"]],
@@ -292,15 +298,19 @@ const getWeather = async (latInp, lonInp) => {
     ]);
     const tempAbbrev = ["F", "C"];
     const convertFuncs = [fahr2Cel, cel2Fahr];
-  
+
     for (let i = 0; i < tempSym.size; i++) {
       const elem = document.createElement("div");
       const btn = document.createElement("button");
       tempUnit.appendChild(elem).className = "btn-grp";
       tempUnit.appendChild(elem).id = tempSym.get(tempAbbrev[i])[2];
-      tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(tempAbbrev[i])[1];
-      tempUnit.appendChild(elem).appendChild(btn).innerText = tempSym.get(tempAbbrev[i])[0];
+      tempUnit.appendChild(elem).appendChild(btn).id = tempSym.get(
+        tempAbbrev[i]
+      )[1];
+      tempUnit.appendChild(elem).appendChild(btn).innerText = tempSym.get(
+        tempAbbrev[i]
+      )[0];
       tempUnit.appendChild(elem).appendChild(btn).onclick = convertFuncs[i];
-    } 
+    }
   }
 };
