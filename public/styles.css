@@ -15,9 +15,12 @@ button {
   box-sizing: border-box;
 }
 
-body {
-  font-size: 1rem;
+html {
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
+body {
   background-color: rgb(180, 180, 180);
   overflow: hidden;
 }
@@ -183,6 +186,7 @@ button {
 #cel {
   position: relative;
   font-size: 1.4rem;
+  font-family: Arial, Helvetica, sans-serif;
   background: none;
   border: none;
 }
